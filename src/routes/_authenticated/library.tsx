@@ -29,13 +29,13 @@ const STATUSES: (ContentStatus | "all")[] = [
 export const Route = createFileRoute("/_authenticated/library")({
   head: () => ({
     meta: [
-      { title: "Content library — CreatorFlow" },
+      { title: "Pustaka Konten — CreatorFlow" },
       {
         name: "description",
-        content: "Browse every video you uploaded, filter by status and jump into review.",
+        content: "Telusuri semua video yang kamu unggah, saring berdasarkan status, lalu lanjut review.",
       },
-      { property: "og:title", content: "Content library — CreatorFlow" },
-      { property: "og:description", content: "All your uploads in one library." },
+      { property: "og:title", content: "Pustaka Konten — CreatorFlow" },
+      { property: "og:description", content: "Semua unggahan kamu dalam satu pustaka." },
     ],
   }),
   component: LibraryPage,
@@ -65,8 +65,8 @@ function LibraryPage() {
 
   return (
     <AppShell
-      title="Content"
-      description="Semua video kamu, dari draft sampai published."
+      title="Konten"
+      description="Semua video kamu, dari draf sampai terbit."
       actions={
         <Button asChild>
           <Link to="/upload">

@@ -25,13 +25,13 @@ const ACCEPTED = ["video/mp4", "video/quicktime", "video/webm"];
 export const Route = createFileRoute("/_authenticated/upload")({
   head: () => ({
     meta: [
-      { title: "Upload content — CreatorFlow" },
+      { title: "Unggah Konten — CreatorFlow" },
       {
         name: "description",
-        content: "Upload a video once and let AI prepare captions for Instagram, TikTok and YouTube.",
+        content: "Unggah video sekali, biarkan AI menyiapkan caption untuk Instagram, TikTok, dan YouTube.",
       },
-      { property: "og:title", content: "Upload content — CreatorFlow" },
-      { property: "og:description", content: "One upload, three platforms." },
+      { property: "og:title", content: "Unggah Konten — CreatorFlow" },
+      { property: "og:description", content: "Satu unggahan, tiga platform." },
     ],
   }),
   component: UploadPage,
@@ -113,7 +113,7 @@ function UploadPage() {
   }
 
   return (
-    <AppShell title="Upload content" description="Satu video, siap untuk tiga platform.">
+    <AppShell title="Unggah konten" description="Satu video, siap untuk tiga platform.">
       <form className="grid max-w-3xl gap-4" onSubmit={submit}>
         <Card>
           <CardContent className="pt-6">

@@ -22,13 +22,13 @@ import { PLATFORM_LABEL, PLATFORM_LIMITS, PLATFORMS, type Platform } from "@/typ
 export const Route = createFileRoute("/_authenticated/content/$id")({
   head: () => ({
     meta: [
-      { title: "Review content — CreatorFlow" },
+      { title: "Review Konten — CreatorFlow" },
       {
         name: "description",
-        content: "Review AI-prepared captions per platform, edit them, then publish or schedule.",
+        content: "Review caption hasil AI per platform, edit, lalu jadwalkan atau publikasikan.",
       },
-      { property: "og:title", content: "Review content — CreatorFlow" },
-      { property: "og:description", content: "Edit and publish your platform variants." },
+      { property: "og:title", content: "Review Konten — CreatorFlow" },
+      { property: "og:description", content: "Edit dan publikasikan varian tiap platform." },
     ],
   }),
   component: ContentDetail,
@@ -203,7 +203,7 @@ function ContentDetail() {
       <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
         <Card>
           <CardHeader className="flex-row items-center justify-between">
-            <CardTitle className="text-base">Platform variants</CardTitle>
+            <CardTitle className="text-base">Varian per platform</CardTitle>
             <StatusBadge status={content.status} />
           </CardHeader>
           <CardContent>
@@ -258,7 +258,7 @@ function ContentDetail() {
                             onChange={(e) => set({ caption: e.target.value })}
                           />
                         </Field>
-                        <Field label="Call to action">
+                        <Field label="Ajakan bertindak (CTA)">
                           <Input value={draft.cta} onChange={(e) => set({ cta: e.target.value })} />
                         </Field>
                         <Field
@@ -274,14 +274,14 @@ function ContentDetail() {
                     )}
                     <div className="flex gap-2">
                       <Button onClick={() => saving.mutate(platform)} disabled={saving.isPending}>
-                        Save
+                        Simpan
                       </Button>
                       <Button
                         variant="secondary"
                         onClick={() => generating.mutate(platform)}
                         disabled={generating.isPending}
                       >
-                        <RefreshCw className="size-4" /> Regenerate {PLATFORM_LABEL[platform]}
+                        <RefreshCw className="size-4" /> Buat ulang {PLATFORM_LABEL[platform]}
                       </Button>
                     </div>
                   </TabsContent>
@@ -294,7 +294,7 @@ function ContentDetail() {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Publish</CardTitle>
+              <CardTitle className="text-base">Publikasikan</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {PLATFORMS.map((platform) => {
@@ -340,14 +340,14 @@ function ContentDetail() {
                   onClick={() => publishing.mutate(false)}
                   disabled={publishing.isPending || !selected.length}
                 >
-                  <Rocket className="size-4" /> Publish now
+                  <Rocket className="size-4" /> Publikasikan sekarang
                 </Button>
                 <Button
                   variant="secondary"
                   onClick={() => publishing.mutate(true)}
                   disabled={publishing.isPending || !selected.length || !scheduledFor}
                 >
-                  Schedule
+                  Jadwalkan
                 </Button>
               </div>
             </CardContent>
@@ -355,11 +355,11 @@ function ContentDetail() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Publishing jobs</CardTitle>
+              <CardTitle className="text-base">Status job publikasi</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {data.jobs.length === 0 ? (
-                <p className="text-sm text-muted-foreground">Belum ada job.</p>
+                <p className="text-sm text-muted-foreground">Belum ada job publikasi.</p>
               ) : (
                 data.jobs.map((job) => (
                   <div key={job.id} className="rounded-lg border border-border p-3 text-sm">
@@ -391,7 +391,7 @@ function ContentDetail() {
                           void queryClient.invalidateQueries({ queryKey: ["content", id] });
                         }}
                       >
-                        Retry
+                        Coba lagi
                       </Button>
                     ) : null}
                   </div>

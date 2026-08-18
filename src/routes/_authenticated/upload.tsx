@@ -1,15 +1,22 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { UploadCloud } from "lucide-react";
+import { Film, HardDrive, UploadCloud } from "lucide-react";
 import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
+import { DrivePickerDialog } from "@/components/drive-picker-dialog";
+import { useDriveStatus } from "@/components/google-drive-card";
+import { importDriveVideo } from "@/lib/api/drive.functions";
+import { DRIVE_STATE_LABEL, type DriveFile } from "@/lib/drive/config";
 import {
   Select,
   SelectContent,
@@ -40,7 +47,11 @@ export const Route = createFileRoute("/_authenticated/upload")({
 
 function UploadPage() {
   const navigate = useNavigate();
+  const importDrive = useServerFn(importDriveVideo);
   const [file, setFile] = useState<File | null>(null);
+  const [driveFile, setDriveFile] = useState<DriveFile | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [source, setSource] = useState<"local" | "drive">("local");
   const [title, setTitle] = useState("");
   const [topic, setTopic] = useState("");
   const [audience, setAudience] = useState("");
@@ -59,6 +70,8 @@ function UploadPage() {
     },
   });
 
+  const { data: driveStatus } = useDriveStatus();
+
   const effectiveTone = !toneTouched && brand?.default_tone ? brand.default_tone : tone;
 
   function pick(selected: File | null) {
@@ -75,8 +88,47 @@ function UploadPage() {
     if (!title) setTitle(selected.name.replace(/\.[^.]+$/, ""));
   }
 
+  function pickDrive(selected: DriveFile) {
+    setDriveFile(selected);
+    if (!title) setTitle(selected.name.replace(/\.[^.]+$/, ""));
+  }
+
+  async function submitDrive() {
+    if (!driveFile) {
+      toast.error("Pilih video dari Google Drive dulu.");
+      return;
+    }
+    setBusy(true);
+    setProgress(30);
+    try {
+      const result = await importDrive({
+        data: {
+          fileId: driveFile.id,
+          title: title || driveFile.name,
+          topic: topic || null,
+          audience: audience || null,
+          tone: effectiveTone,
+          objective,
+          notes: notes || null,
+        },
+      });
+      setProgress(100);
+      toast.success("Video Drive terhubung. Lanjut siapkan konten dengan AI.");
+      navigate({ to: "/content/$id", params: { id: result.id } });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Gagal mengambil video dari Drive.");
+      setProgress(0);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function submit(event: React.FormEvent) {
     event.preventDefault();
+    if (source === "drive") {
+      await submitDrive();
+      return;
+    }
     if (!file) {
       toast.error("Pilih video dulu.");
       return;

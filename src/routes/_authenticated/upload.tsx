@@ -172,29 +172,38 @@ function UploadPage() {
             </div>
             <div className="space-y-1.5">
               <Label>Tone</Label>
-              <Select value={tone} onValueChange={setTone}>
+              <Select
+                value={effectiveTone}
+                onValueChange={(v) => {
+                  setToneTouched(true);
+                  setTone(v);
+                }}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {TONES.map((t) => (
-                    <SelectItem key={t} value={t} className="capitalize">
-                      {t}
+                    <SelectItem key={t} value={t}>
+                      {TONE_LABEL[t] ?? t}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
+              {brand?.default_tone && !toneTouched ? (
+                <p className="text-xs text-muted-foreground">Diambil dari pengaturan brand kamu.</p>
+              ) : null}
             </div>
             <div className="space-y-1.5">
-              <Label>Objective</Label>
+              <Label>Tujuan</Label>
               <Select value={objective} onValueChange={setObjective}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {OBJECTIVES.map((o) => (
-                    <SelectItem key={o} value={o} className="capitalize">
-                      {o}
+                    <SelectItem key={o} value={o}>
+                      {OBJECTIVE_LABEL[o] ?? o}
                     </SelectItem>
                   ))}
                 </SelectContent>

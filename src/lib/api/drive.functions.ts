@@ -100,7 +100,7 @@ export const startDriveConnect = createServerFn({ method: "POST" })
       appUserId: context.userId,
       clientAPIKey: clientKey,
       returnUrl,
-      connectionAPIKey: existing ?? undefined,
+      ...(existing ? { connectionAPIKey: existing } : {}),
       credentialsConfiguration: { scopes: DRIVE_SCOPES },
     });
     return { authorizationUrl };

@@ -88,8 +88,8 @@ function LibraryPage() {
           </SelectTrigger>
           <SelectContent>
             {STATUSES.map((s) => (
-              <SelectItem key={s} value={s} className="capitalize">
-                {s === "all" ? "Semua status" : s}
+              <SelectItem key={s} value={s}>
+                {s === "all" ? "Semua status" : STATUS_LABEL[s]}
               </SelectItem>
             ))}
           </SelectContent>

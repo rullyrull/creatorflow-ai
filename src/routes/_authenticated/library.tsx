@@ -26,6 +26,14 @@ const STATUSES: (ContentStatus | "all")[] = [
   "failed",
 ];
 
+const STATUS_LABEL: Record<string, string> = {
+  draft: "Draf",
+  scheduled: "Terjadwal",
+  publishing: "Sedang publikasi",
+  published: "Terbit",
+  failed: "Gagal",
+};
+
 export const Route = createFileRoute("/_authenticated/library")({
   head: () => ({
     meta: [

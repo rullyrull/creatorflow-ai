@@ -181,19 +181,74 @@ function UploadPage() {
       <form className="grid max-w-3xl gap-4" onSubmit={submit}>
         <Card>
           <CardContent className="pt-6">
-            <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border py-10 text-center transition-colors hover:bg-accent/40">
-              <UploadCloud className="size-6 text-muted-foreground" />
-              <span className="text-sm font-medium">
-                {file ? file.name : "Klik untuk pilih video"}
-              </span>
-              <span className="text-xs text-muted-foreground">MP4, MOV, atau WebM. Maks 500 MB.</span>
-              <input
-                type="file"
-                accept={ACCEPTED.join(",")}
-                className="hidden"
-                onChange={(e) => pick(e.target.files?.[0] ?? null)}
-              />
-            </label>
+            <Tabs value={source} onValueChange={(v) => setSource(v as "local" | "drive")}>
+              <TabsList className="mb-4">
+                <TabsTrigger value="local">Unggah dari perangkat</TabsTrigger>
+                <TabsTrigger value="drive">Google Drive</TabsTrigger>
+              </TabsList>
+              <TabsContent value="local">
+                <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border py-10 text-center transition-colors hover:bg-accent/40">
+                  <UploadCloud className="size-6 text-muted-foreground" />
+                  <span className="text-sm font-medium">
+                    {file ? file.name : "Klik untuk pilih video"}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    MP4, MOV, atau WebM. Maks 500 MB.
+                  </span>
+                  <input
+                    type="file"
+                    accept={ACCEPTED.join(",")}
+                    className="hidden"
+                    onChange={(e) => pick(e.target.files?.[0] ?? null)}
+                  />
+                </label>
+              </TabsContent>
+              <TabsContent value="drive" className="space-y-3">
+                <div className="flex flex-wrap items-center gap-2 text-sm">
+                  <HardDrive className="size-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Status Google Drive:</span>
+                  <Badge variant={driveStatus?.state === "connected" ? "default" : "secondary"}>
+                    {driveStatus ? (DRIVE_STATE_LABEL[driveStatus.state] ?? "…") : "…"}
+                  </Badge>
+                  {driveStatus?.folderName ? (
+                    <span className="text-xs text-muted-foreground">
+                      Folder: {driveStatus.folderName}
+                    </span>
+                  ) : null}
+                </div>
+                {driveStatus?.state === "connected" ? (
+                  <div className="rounded-xl border border-dashed border-border p-6 text-center">
+                    {driveFile ? (
+                      <p className="mb-3 flex items-center justify-center gap-2 text-sm font-medium">
+                        <Film className="size-4 text-muted-foreground" />
+                        {driveFile.name}
+                      </p>
+                    ) : (
+                      <p className="mb-3 text-sm text-muted-foreground">
+                        Belum ada video Drive yang dipilih.
+                      </p>
+                    )}
+                    <Button type="button" variant="outline" onClick={() => setPickerOpen(true)}>
+                      {driveFile ? "Ganti video" : "Pilih video dari Google Drive"}
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+                    <p className="mb-3">
+                      {driveStatus?.message ?? "Memeriksa koneksi Google Drive…"}
+                    </p>
+                    <Button type="button" variant="outline" onClick={() => navigate({ to: "/integrations" })}>
+                      Buka halaman Integrasi
+                    </Button>
+                  </div>
+                )}
+                <DrivePickerDialog
+                  open={pickerOpen}
+                  onOpenChange={setPickerOpen}
+                  onSelect={pickDrive}
+                />
+              </TabsContent>
+            </Tabs>
             {busy ? <Progress value={progress} className="mt-4" /> : null}
           </CardContent>
         </Card>
@@ -275,7 +330,11 @@ function UploadPage() {
 
         <div>
           <Button type="submit" disabled={busy}>
-            {busy ? "Mengupload..." : "Upload & lanjutkan"}
+            {busy
+              ? "Memproses..."
+              : source === "drive"
+                ? "Gunakan video Drive & lanjutkan"
+                : "Upload & lanjutkan"}
           </Button>
         </div>
       </form>

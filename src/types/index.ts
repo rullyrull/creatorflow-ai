@@ -72,6 +72,47 @@ export const OBJECTIVES = [
   "brand awareness",
 ] as const;
 
+export const BRAND_LANGUAGES = [
+  { value: "id", label: "Bahasa Indonesia" },
+  { value: "id-en", label: "Campuran Indonesia + Inggris" },
+  { value: "en", label: "Bahasa Inggris" },
+  { value: "jv", label: "Bahasa Jawa" },
+  { value: "ms", label: "Bahasa Melayu" },
+] as const;
+
+export const FORMALITY_LEVELS = [
+  { value: "santai", label: "Santai (aku/kamu)" },
+  { value: "netral", label: "Netral" },
+  { value: "formal", label: "Formal (saya/Anda)" },
+] as const;
+
+export const EMOJI_USAGE = [
+  { value: "tanpa", label: "Tanpa emoji" },
+  { value: "sedikit", label: "Sedikit (1-2)" },
+  { value: "sedang", label: "Sedang (3-5)" },
+  { value: "banyak", label: "Banyak / ekspresif" },
+] as const;
+
+export const TONE_LABEL: Record<string, string> = {
+  casual: "Santai",
+  educational: "Edukatif",
+  funny: "Lucu",
+  professional: "Profesional",
+  storytelling: "Bercerita",
+  motivational: "Motivasional",
+  provocative: "Provokatif",
+  friendly: "Ramah",
+};
+
+export const OBJECTIVE_LABEL: Record<string, string> = {
+  reach: "Jangkauan",
+  engagement: "Interaksi",
+  followers: "Tambah follower",
+  education: "Edukasi",
+  sales: "Penjualan",
+  "brand awareness": "Brand awareness",
+};
+
 export const PLATFORM_LIMITS = {
   instagram: { caption: 2200, hashtags: 30 },
   tiktok: { caption: 2200, hashtags: 20 },

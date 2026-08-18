@@ -17,7 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { OBJECTIVES, TONES } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import { OBJECTIVES, OBJECTIVE_LABEL, TONES, TONE_LABEL } from "@/types";
 
 const MAX_BYTES = 500 * 1024 * 1024;
 const ACCEPTED = ["video/mp4", "video/quicktime", "video/webm"];
@@ -48,6 +49,17 @@ function UploadPage() {
   const [notes, setNotes] = useState("");
   const [progress, setProgress] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [toneTouched, setToneTouched] = useState(false);
+
+  const { data: brand } = useQuery({
+    queryKey: ["brand-profile"],
+    queryFn: async () => {
+      const { data } = await supabase.from("brand_profiles").select("*").maybeSingle();
+      return data;
+    },
+  });
+
+  const effectiveTone = !toneTouched && brand?.default_tone ? brand.default_tone : tone;
 
   function pick(selected: File | null) {
     if (!selected) return;
@@ -90,6 +102,7 @@ function UploadPage() {
           topic: topic || null,
           target_audience: audience || null,
           tone,
+          tone_source: undefined,
           objective,
           additional_instructions: notes || null,
           storage_path: path,

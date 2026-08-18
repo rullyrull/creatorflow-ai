@@ -20,6 +20,7 @@ import { Route as AuthenticatedScheduleRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedUploadRouteImport } from './routes/_authenticated/upload'
 import { Route as AuthenticatedContentIdRouteImport } from './routes/_authenticated/content.$id'
+import { Route as OauthGoogle_driveReturnRouteImport } from './routes/oauth/google_drive/return'
 import { Route as ApiPublicHooksRunScheduledJobsRouteImport } from './routes/api/public/hooks/run-scheduled-jobs'
 import { Route as ApiPublicOauthCallbackPlatformRouteImport } from './routes/api/public/oauth/callback.$platform'
 
@@ -78,6 +79,11 @@ const AuthenticatedContentIdRoute = AuthenticatedContentIdRouteImport.update({
   path: '/content/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const OauthGoogle_driveReturnRoute = OauthGoogle_driveReturnRouteImport.update({
+  id: '/oauth/google_drive/return',
+  path: '/oauth/google_drive/return',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicHooksRunScheduledJobsRoute =
   ApiPublicHooksRunScheduledJobsRouteImport.update({
     id: '/api/public/hooks/run-scheduled-jobs',
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRoute
   '/upload': typeof AuthenticatedUploadRoute
   '/content/$id': typeof AuthenticatedContentIdRoute
+  '/oauth/google_drive/return': typeof OauthGoogle_driveReturnRoute
   '/api/public/hooks/run-scheduled-jobs': typeof ApiPublicHooksRunScheduledJobsRoute
   '/api/public/oauth/callback/$platform': typeof ApiPublicOauthCallbackPlatformRoute
 }
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRoute
   '/upload': typeof AuthenticatedUploadRoute
   '/content/$id': typeof AuthenticatedContentIdRoute
+  '/oauth/google_drive/return': typeof OauthGoogle_driveReturnRoute
   '/api/public/hooks/run-scheduled-jobs': typeof ApiPublicHooksRunScheduledJobsRoute
   '/api/public/oauth/callback/$platform': typeof ApiPublicOauthCallbackPlatformRoute
 }
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/upload': typeof AuthenticatedUploadRoute
   '/_authenticated/content/$id': typeof AuthenticatedContentIdRoute
+  '/oauth/google_drive/return': typeof OauthGoogle_driveReturnRoute
   '/api/public/hooks/run-scheduled-jobs': typeof ApiPublicHooksRunScheduledJobsRoute
   '/api/public/oauth/callback/$platform': typeof ApiPublicOauthCallbackPlatformRoute
 }
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/upload'
     | '/content/$id'
+    | '/oauth/google_drive/return'
     | '/api/public/hooks/run-scheduled-jobs'
     | '/api/public/oauth/callback/$platform'
   fileRoutesByTo: FileRoutesByTo
@@ -162,6 +172,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/upload'
     | '/content/$id'
+    | '/oauth/google_drive/return'
     | '/api/public/hooks/run-scheduled-jobs'
     | '/api/public/oauth/callback/$platform'
   id:
@@ -177,6 +188,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/_authenticated/upload'
     | '/_authenticated/content/$id'
+    | '/oauth/google_drive/return'
     | '/api/public/hooks/run-scheduled-jobs'
     | '/api/public/oauth/callback/$platform'
   fileRoutesById: FileRoutesById
@@ -185,6 +197,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  OauthGoogle_driveReturnRoute: typeof OauthGoogle_driveReturnRoute
   ApiPublicHooksRunScheduledJobsRoute: typeof ApiPublicHooksRunScheduledJobsRoute
   ApiPublicOauthCallbackPlatformRoute: typeof ApiPublicOauthCallbackPlatformRoute
 }
@@ -268,6 +281,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedContentIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/oauth/google_drive/return': {
+      id: '/oauth/google_drive/return'
+      path: '/oauth/google_drive/return'
+      fullPath: '/oauth/google_drive/return'
+      preLoaderRoute: typeof OauthGoogle_driveReturnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hooks/run-scheduled-jobs': {
       id: '/api/public/hooks/run-scheduled-jobs'
       path: '/api/public/hooks/run-scheduled-jobs'
@@ -314,6 +334,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  OauthGoogle_driveReturnRoute: OauthGoogle_driveReturnRoute,
   ApiPublicHooksRunScheduledJobsRoute: ApiPublicHooksRunScheduledJobsRoute,
   ApiPublicOauthCallbackPlatformRoute: ApiPublicOauthCallbackPlatformRoute,
 }

@@ -13,13 +13,13 @@ import { PLATFORM_LABEL, type Platform } from "@/types";
 export const Route = createFileRoute("/_authenticated/schedule")({
   head: () => ({
     meta: [
-      { title: "Schedule — CreatorFlow" },
+      { title: "Jadwal Publikasi — CreatorFlow" },
       {
         name: "description",
-        content: "See every upcoming and in-flight publishing job, retry failures or cancel them.",
+        content: "Lihat semua job publikasi yang berjalan dan terjadwal, ulangi yang gagal atau batalkan.",
       },
-      { property: "og:title", content: "Schedule — CreatorFlow" },
-      { property: "og:description", content: "Your publishing queue at a glance." },
+      { property: "og:title", content: "Jadwal Publikasi — CreatorFlow" },
+      { property: "og:description", content: "Antrean publikasi kamu dalam satu layar." },
     ],
   }),
   component: SchedulePage,
@@ -46,7 +46,7 @@ function SchedulePage() {
   const jobs = data ?? [];
 
   return (
-    <AppShell title="Schedule" description="Antrian publishing kamu.">
+    <AppShell title="Jadwal" description="Antrean publikasi kamu, lengkap dengan status job.">
       {jobs.length === 0 ? (
         <Card>
           <CardContent className="py-12 text-center text-sm text-muted-foreground">
@@ -84,7 +84,7 @@ function SchedulePage() {
                         void queryClient.invalidateQueries({ queryKey: ["schedule"] });
                       }}
                     >
-                      Retry
+                      Coba lagi
                     </Button>
                   ) : null}
                   {["scheduled", "queued", "failed"].includes(job.status) ? (
@@ -97,7 +97,7 @@ function SchedulePage() {
                         void queryClient.invalidateQueries({ queryKey: ["schedule"] });
                       }}
                     >
-                      Cancel
+                      Batalkan
                     </Button>
                   ) : null}
                 </div>

@@ -17,7 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { OBJECTIVES, TONES } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import { OBJECTIVES, OBJECTIVE_LABEL, TONES, TONE_LABEL } from "@/types";
 
 const MAX_BYTES = 500 * 1024 * 1024;
 const ACCEPTED = ["video/mp4", "video/quicktime", "video/webm"];
@@ -25,13 +26,13 @@ const ACCEPTED = ["video/mp4", "video/quicktime", "video/webm"];
 export const Route = createFileRoute("/_authenticated/upload")({
   head: () => ({
     meta: [
-      { title: "Upload content — CreatorFlow" },
+      { title: "Unggah Konten — CreatorFlow" },
       {
         name: "description",
-        content: "Upload a video once and let AI prepare captions for Instagram, TikTok and YouTube.",
+        content: "Unggah video sekali, biarkan AI menyiapkan caption untuk Instagram, TikTok, dan YouTube.",
       },
-      { property: "og:title", content: "Upload content — CreatorFlow" },
-      { property: "og:description", content: "One upload, three platforms." },
+      { property: "og:title", content: "Unggah Konten — CreatorFlow" },
+      { property: "og:description", content: "Satu unggahan, tiga platform." },
     ],
   }),
   component: UploadPage,
@@ -48,6 +49,17 @@ function UploadPage() {
   const [notes, setNotes] = useState("");
   const [progress, setProgress] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [toneTouched, setToneTouched] = useState(false);
+
+  const { data: brand } = useQuery({
+    queryKey: ["brand-profile"],
+    queryFn: async () => {
+      const { data } = await supabase.from("brand_profiles").select("*").maybeSingle();
+      return data;
+    },
+  });
+
+  const effectiveTone = !toneTouched && brand?.default_tone ? brand.default_tone : tone;
 
   function pick(selected: File | null) {
     if (!selected) return;
@@ -89,7 +101,7 @@ function UploadPage() {
           title: title || file.name,
           topic: topic || null,
           target_audience: audience || null,
-          tone,
+          tone: effectiveTone,
           objective,
           additional_instructions: notes || null,
           storage_path: path,
@@ -113,7 +125,7 @@ function UploadPage() {
   }
 
   return (
-    <AppShell title="Upload content" description="Satu video, siap untuk tiga platform.">
+    <AppShell title="Unggah konten" description="Satu video, siap untuk tiga platform.">
       <form className="grid max-w-3xl gap-4" onSubmit={submit}>
         <Card>
           <CardContent className="pt-6">
@@ -160,29 +172,38 @@ function UploadPage() {
             </div>
             <div className="space-y-1.5">
               <Label>Tone</Label>
-              <Select value={tone} onValueChange={setTone}>
+              <Select
+                value={effectiveTone}
+                onValueChange={(v) => {
+                  setToneTouched(true);
+                  setTone(v);
+                }}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {TONES.map((t) => (
-                    <SelectItem key={t} value={t} className="capitalize">
-                      {t}
+                    <SelectItem key={t} value={t}>
+                      {TONE_LABEL[t] ?? t}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
+              {brand?.default_tone && !toneTouched ? (
+                <p className="text-xs text-muted-foreground">Diambil dari pengaturan brand kamu.</p>
+              ) : null}
             </div>
             <div className="space-y-1.5">
-              <Label>Objective</Label>
+              <Label>Tujuan</Label>
               <Select value={objective} onValueChange={setObjective}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {OBJECTIVES.map((o) => (
-                    <SelectItem key={o} value={o} className="capitalize">
-                      {o}
+                    <SelectItem key={o} value={o}>
+                      {OBJECTIVE_LABEL[o] ?? o}
                     </SelectItem>
                   ))}
                 </SelectContent>

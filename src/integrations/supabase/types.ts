@@ -111,9 +111,15 @@ export type Database = {
           audience: string | null
           content_pillars: string[]
           created_at: string
+          default_language: string
+          default_tone: string | null
+          emoji_usage: string
           favorite_cta: string | null
+          formality: string
+          hashtag_style: string | null
           id: string
           niche: string | null
+          style_rules: string | null
           updated_at: string
           user_id: string
           words_to_avoid: string | null
@@ -124,9 +130,15 @@ export type Database = {
           audience?: string | null
           content_pillars?: string[]
           created_at?: string
+          default_language?: string
+          default_tone?: string | null
+          emoji_usage?: string
           favorite_cta?: string | null
+          formality?: string
+          hashtag_style?: string | null
           id?: string
           niche?: string | null
+          style_rules?: string | null
           updated_at?: string
           user_id: string
           words_to_avoid?: string | null
@@ -137,9 +149,15 @@ export type Database = {
           audience?: string | null
           content_pillars?: string[]
           created_at?: string
+          default_language?: string
+          default_tone?: string | null
+          emoji_usage?: string
           favorite_cta?: string | null
+          formality?: string
+          hashtag_style?: string | null
           id?: string
           niche?: string | null
+          style_rules?: string | null
           updated_at?: string
           user_id?: string
           words_to_avoid?: string | null

@@ -14,10 +14,10 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       { title: "Dashboard — CreatorFlow" },
       {
         name: "description",
-        content: "Overview of your uploads, scheduled posts and publishing status across platforms.",
+        content: "Ringkasan unggahan, jadwal posting, dan status publikasi di semua platform.",
       },
       { property: "og:title", content: "Dashboard — CreatorFlow" },
-      { property: "og:description", content: "Your publishing overview in one place." },
+      { property: "og:description", content: "Ringkasan publikasi kamu dalam satu tempat." },
     ],
   }),
   component: DashboardPage,
@@ -55,18 +55,18 @@ function DashboardPage() {
 
   const jobs = data?.jobs ?? [];
   const stats = [
-    { label: "Total content", value: data?.content.length ?? 0, icon: FileVideo },
+    { label: "Total konten", value: data?.content.length ?? 0, icon: FileVideo },
     {
-      label: "Scheduled",
+      label: "Terjadwal",
       value: jobs.filter((j) => j.status === "scheduled").length,
       icon: CalendarClock,
     },
     {
-      label: "Published",
+      label: "Terbit",
       value: jobs.filter((j) => j.status === "published").length,
       icon: CheckCircle2,
     },
-    { label: "Failed", value: jobs.filter((j) => j.status === "failed").length, icon: TriangleAlert },
+    { label: "Gagal", value: jobs.filter((j) => j.status === "failed").length, icon: TriangleAlert },
   ];
 
   return (

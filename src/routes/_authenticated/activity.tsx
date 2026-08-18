@@ -7,13 +7,13 @@ import { Card, CardContent } from "@/components/ui/card";
 export const Route = createFileRoute("/_authenticated/activity")({
   head: () => ({
     meta: [
-      { title: "Activity — CreatorFlow" },
+      { title: "Aktivitas — CreatorFlow" },
       {
         name: "description",
-        content: "A readable history of uploads, AI generations and publishing results.",
+        content: "Riwayat unggahan, hasil AI, dan publikasi dalam bahasa yang mudah dibaca.",
       },
-      { property: "og:title", content: "Activity — CreatorFlow" },
-      { property: "og:description", content: "Every action CreatorFlow took for you." },
+      { property: "og:title", content: "Aktivitas — CreatorFlow" },
+      { property: "og:description", content: "Semua tindakan yang dilakukan CreatorFlow untukmu." },
     ],
   }),
   component: ActivityPage,
@@ -33,7 +33,7 @@ function ActivityPage() {
   });
 
   return (
-    <AppShell title="Activity" description="Riwayat semua yang terjadi di akun kamu.">
+    <AppShell title="Aktivitas" description="Riwayat semua yang terjadi di akun kamu.">
       {(data?.length ?? 0) === 0 ? (
         <Card>
           <CardContent className="py-12 text-center text-sm text-muted-foreground">

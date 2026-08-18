@@ -18,12 +18,12 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/library", label: "Content", icon: Library },
+  { to: "/library", label: "Konten", icon: Library },
   { to: "/upload", label: "Upload", icon: Upload },
-  { to: "/schedule", label: "Schedule", icon: CalendarClock },
-  { to: "/integrations", label: "Integrations", icon: Plug },
-  { to: "/activity", label: "Activity", icon: Activity },
-  { to: "/settings", label: "Settings", icon: Settings },
+  { to: "/schedule", label: "Jadwal", icon: CalendarClock },
+  { to: "/integrations", label: "Integrasi", icon: Plug },
+  { to: "/activity", label: "Aktivitas", icon: Activity },
+  { to: "/settings", label: "Pengaturan", icon: Settings },
 ] as const;
 
 export function AppShell({
@@ -76,7 +76,7 @@ export function AppShell({
           })}
         </nav>
         <Button variant="ghost" className="justify-start gap-3" onClick={signOut}>
-          <LogOut className="size-4" /> Sign out
+          <LogOut className="size-4" /> Keluar
         </Button>
       </aside>
 

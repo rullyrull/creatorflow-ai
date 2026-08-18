@@ -13,16 +13,26 @@ import {
 } from "@/lib/api/integrations.functions";
 import { PLATFORM_LABEL, PLATFORMS, type Platform } from "@/types";
 
+const STATE_LABEL: Record<string, string> = {
+  configuration_required: "Perlu konfigurasi",
+  not_connected: "Belum terhubung",
+  connected: "Terhubung",
+  expired: "Kedaluwarsa",
+  error: "Bermasalah",
+  publishing_restricted: "Publikasi dibatasi",
+};
+
 export const Route = createFileRoute("/_authenticated/integrations")({
   head: () => ({
     meta: [
-      { title: "Integrations — CreatorFlow" },
+      { title: "Integrasi Akun — CreatorFlow" },
       {
         name: "description",
-        content: "Connect Instagram, TikTok and YouTube accounts so CreatorFlow can publish for you.",
+        content:
+          "Hubungkan akun Instagram, TikTok, dan YouTube lewat OAuth supaya CreatorFlow bisa posting untukmu.",
       },
-      { property: "og:title", content: "Integrations — CreatorFlow" },
-      { property: "og:description", content: "Manage your social account connections." },
+      { property: "og:title", content: "Integrasi Akun — CreatorFlow" },
+      { property: "og:description", content: "Kelola koneksi akun sosial kamu." },
     ],
   }),
   component: IntegrationsPage,
@@ -42,7 +52,7 @@ function IntegrationsPage() {
     const result = await connect({ data: { platform } });
     if (!result.ok) {
       toast.error(
-        `${PLATFORM_LABEL[platform]} integration requires configuration: ${result.missingConfig.join(", ")}`,
+        `Integrasi ${PLATFORM_LABEL[platform]} belum dikonfigurasi: ${result.missingConfig.join(", ")}`,
       );
       return;
     }
@@ -51,8 +61,8 @@ function IntegrationsPage() {
 
   return (
     <AppShell
-      title="Integrations"
-      description="Hubungkan akun sosial kamu untuk publishing otomatis."
+      title="Integrasi"
+      description="Status koneksi Instagram, TikTok, dan YouTube. Hubungkan lewat OAuth untuk publikasi otomatis."
     >
       <div className="grid gap-4 lg:grid-cols-3">
         {PLATFORMS.map((platform) => {
@@ -63,7 +73,9 @@ function IntegrationsPage() {
               <CardHeader className="flex-row items-center justify-between">
                 <CardTitle className="text-base">{PLATFORM_LABEL[platform]}</CardTitle>
                 <Badge variant={connected ? "default" : "secondary"}>
-                  {isLoading ? "…" : (status?.state.replace(/_/g, " ") ?? "unknown")}
+                  {isLoading
+                    ? "…"
+                    : (STATE_LABEL[status?.state ?? ""] ?? "Tidak diketahui")}
                 </Badge>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -73,7 +85,7 @@ function IntegrationsPage() {
                 ) : null}
                 {status?.missingConfig.length ? (
                   <p className="text-xs text-muted-foreground">
-                    Missing configuration: {status.missingConfig.join(", ")}
+                    Kredensial yang belum diisi: {status.missingConfig.join(", ")}
                   </p>
                 ) : null}
                 <div className="flex gap-2">
@@ -82,7 +94,7 @@ function IntegrationsPage() {
                     disabled={status?.state === "configuration_required"}
                     onClick={() => handleConnect(platform)}
                   >
-                    {connected ? "Reconnect" : "Connect"}
+                    {connected ? "Hubungkan ulang" : "Hubungkan"}
                   </Button>
                   {status?.account ? (
                     <Button
@@ -94,7 +106,7 @@ function IntegrationsPage() {
                         void queryClient.invalidateQueries({ queryKey: ["integrations"] });
                       }}
                     >
-                      Disconnect
+                      Putuskan
                     </Button>
                   ) : null}
                 </div>

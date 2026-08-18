@@ -6,6 +6,7 @@ import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { GoogleDriveCard } from "@/components/google-drive-card";
 import {
   disconnectAccount,
   getIntegrationStatuses,
@@ -62,9 +63,10 @@ function IntegrationsPage() {
   return (
     <AppShell
       title="Integrasi"
-      description="Status koneksi Instagram, TikTok, dan YouTube. Hubungkan lewat OAuth untuk publikasi otomatis."
+      description="Status koneksi Google Drive, Instagram, TikTok, dan YouTube. Hubungkan lewat OAuth untuk ambil video dan publikasi otomatis."
     >
       <div className="grid gap-4 lg:grid-cols-3">
+        <GoogleDriveCard />
         {PLATFORMS.map((platform) => {
           const status = data?.find((s) => s.platform === platform);
           const connected = status?.state === "connected";

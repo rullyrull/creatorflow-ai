@@ -105,6 +105,51 @@ export type Database = {
           },
         ]
       }
+      app_user_connections: {
+        Row: {
+          account_email: string | null
+          connection_key_ciphertext: string
+          connector_id: string
+          created_at: string
+          folder_id: string | null
+          folder_name: string | null
+          granted_scopes: string[]
+          id: string
+          last_error: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_email?: string | null
+          connection_key_ciphertext: string
+          connector_id: string
+          created_at?: string
+          folder_id?: string | null
+          folder_name?: string | null
+          granted_scopes?: string[]
+          id?: string
+          last_error?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_email?: string | null
+          connection_key_ciphertext?: string
+          connector_id?: string
+          created_at?: string
+          folder_id?: string | null
+          folder_name?: string | null
+          granted_scopes?: string[]
+          id?: string
+          last_error?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       brand_profiles: {
         Row: {
           about_me: string | null
@@ -170,12 +215,16 @@ export type Database = {
           additional_instructions: string | null
           created_at: string
           deleted_at: string | null
+          drive_file_id: string | null
+          drive_file_name: string | null
+          drive_web_view_link: string | null
           duration_seconds: number | null
           file_size: number | null
           id: string
           mime_type: string | null
           objective: string | null
           original_filename: string | null
+          source: string
           status: Database["public"]["Enums"]["content_status"]
           storage_path: string | null
           target_audience: string | null
@@ -190,12 +239,16 @@ export type Database = {
           additional_instructions?: string | null
           created_at?: string
           deleted_at?: string | null
+          drive_file_id?: string | null
+          drive_file_name?: string | null
+          drive_web_view_link?: string | null
           duration_seconds?: number | null
           file_size?: number | null
           id?: string
           mime_type?: string | null
           objective?: string | null
           original_filename?: string | null
+          source?: string
           status?: Database["public"]["Enums"]["content_status"]
           storage_path?: string | null
           target_audience?: string | null
@@ -210,12 +263,16 @@ export type Database = {
           additional_instructions?: string | null
           created_at?: string
           deleted_at?: string | null
+          drive_file_id?: string | null
+          drive_file_name?: string | null
+          drive_web_view_link?: string | null
           duration_seconds?: number | null
           file_size?: number | null
           id?: string
           mime_type?: string | null
           objective?: string | null
           original_filename?: string | null
+          source?: string
           status?: Database["public"]["Enums"]["content_status"]
           storage_path?: string | null
           target_audience?: string | null
